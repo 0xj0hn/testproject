@@ -34,6 +34,9 @@ class _ReportInformationScreenState extends State<ReportInformationScreen> {
             }),
             GetBuilder<PlateController>(builder: (c) {
               return PlateInputWidget(
+                plate1: c.plate1,
+                plate2: c.plate2,
+                plate3: c.plate3,
                 onChangedPlate1: c.updatePlate1,
                 onChangedPlate2: c.updatePlate2,
                 onChangedPlate3: c.updatePlate3,

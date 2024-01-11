@@ -9,16 +9,14 @@ class PlateController extends GetxController {
   String initialPlate3 = "";
   String mobileNumber = "";
 
-  String plate1 = "";
-  String plate2 = "";
-  String plate3 = "";
+  String plate1 = "2";
+  String plate2 = "1";
+  String plate3 = "4";
 
   bool get isEdited =>
       initialPlate1 != plate1 ||
       initialPlate2 != plate2 ||
       initialPlate3 != plate3;
-
-  bool isDataChanged = false;
 
   void updatePlate1(String value) {
     plate1 = value;
@@ -39,7 +37,6 @@ class PlateController extends GetxController {
     initialPlate1 = plate1;
     initialPlate2 = plate2;
     initialPlate3 = plate3;
-    update();
     getPlateIdentities();
   }
 
