@@ -1,9 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:testproject/controllers/gkey_controller.dart';
-import 'package:testproject/screens/responsive/desktop_navigation_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  await Supabase.initialize(
+    url: "https://shtvqhmxbfrbgpitmyqt.supabase.co",
+    anonKey:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNodHZxaG14YmZyYmdwaXRteXF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDQ5OTc4NTUsImV4cCI6MjAyMDU3Mzg1NX0.lQIEXV-2DQR9hVOLh8M4kEYQquU1fpEDnXOTw62rtwo",
+  );
   runApp(MainApp());
 }
 
@@ -22,52 +28,34 @@ class MyHome extends GetResponsiveView {
     super.key,
   });
 
+  final supabase = Supabase.instance.client;
+
   @override
   Widget builder() {
     return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Navigator(
-              key: Get.nestedKey(1),
-              initialRoute: "/firstScreen",
-              onGenerateRoute: (settings) {
-                late Widget screen;
-                switch (settings.name) {
-                  case "/firstScreen":
-                    screen = const Text("First screen");
-                  case "/secondScreen":
-                    screen = const Text("Second screen");
-                  case "/thirdScreen":
-                    screen = const Text("Third screen");
-                  default:
-                    screen = const Text("Unknown");
-                }
-                return GetPageRoute(
-                  transitionDuration: 0.seconds,
-                  page: () => screen,
-                  settings: settings,
-                );
+      body: Center(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                print(supabase.auth.currentSession);
               },
+              child: Text("Check status"),
             ),
-          ),
-          Expanded(
-            child: AnimatedCrossFade(
-              firstChild: Container(
-                width: double.infinity,
-                color: Colors.red,
-              ),
-              secondChild: SizedBox(),
-              crossFadeState: screen.isPhone
-                  ? CrossFadeState.showSecond
-                  : CrossFadeState.showFirst,
-              duration: 300.milliseconds,
+            ElevatedButton(
+              onPressed: () async {
+                if (supabase.auth.currentSession != null)
+                  await supabase.auth.signOut();
+                print(await supabase.auth.signInWithPassword(
+                  email: "nxh7@duck.com",
+                  password: "13821382",
+                ));
+              },
+              child: Text("Query"),
             ),
-          )
-        ],
+          ],
+        ),
       ),
-      bottomNavigationBar: DesktopNavigation(),
     );
   }
 }
